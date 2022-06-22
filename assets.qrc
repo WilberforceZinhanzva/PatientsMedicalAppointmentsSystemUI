@@ -1,0 +1,9 @@
+<RCC>
+    <qresource prefix="/">
+        <file>fonts/WorkSans-VariableFont_wght.ttf</file>
+        <file>images/base_image.jpeg</file>
+        <file>images/consultancy.jpeg</file>
+        <file>images/optics.jpeg</file>
+        <file>images/surgery.jpeg</file>
+    </qresource>
+</RCC>
