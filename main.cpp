@@ -1,15 +1,34 @@
 #include <QGuiApplication>
 #include <QQmlApplicationEngine>
+#include <QQmlContext>
+#include <QStyleHints>
+//[MODELS]
+#include "doctormodel.h"
+#include "timeslotmodel.h"
+//[UTILS]
+#include "signalhandler.h"
+#include "applicationstatemanager.h"
+#include "authentication.h"
+#include "dialogsmanager.h"
 
 
 int main(int argc, char *argv[])
 {
     QGuiApplication app(argc, argv);
 
+
+
     qmlRegisterSingletonType(QUrl("qrc:/PatientsMedicalAppointmentsSystem/Theme.qml"),"Theming",1,0,"Theme");
+    qmlRegisterType<DoctorModel>("CollectionModels",1,0,"DoctorModel");
+    qmlRegisterType<TimeSlotModel>("CollectionModels",1,0,"TimeSlotModel");
 
     QQmlApplicationEngine engine;
     const QUrl url(u"qrc:/PatientsMedicalAppointmentsSystem/main.qml"_qs);
+
+    engine.rootContext()->setContextProperty("authentication",&Authentication::instance());
+    engine.rootContext()->setContextProperty("signalHandler", &SignalHandler::instance());
+    engine.rootContext()->setContextProperty("applicationStateManager", &ApplicationStateManager::instance());
+    engine.rootContext()->setContextProperty("dialogsManager",&DialogsManager::instance());
     QObject::connect(&engine, &QQmlApplicationEngine::objectCreated,
                      &app, [url](QObject *obj, const QUrl &objUrl) {
         if (!obj && url == objUrl)

@@ -4,7 +4,9 @@ import Theming 1.0
 
 Item {
     id: root
-    anchors.fill: parent
+
+
+    signal navigate(string page)
 
 
     ColumnLayout{
@@ -61,15 +63,33 @@ Item {
                 id: _appointmentTypeCardConsultation
                 appointmentTypeName: "Consulation"
                 imageSource: "qrc:/images/consultancy.jpeg"
+                onClicked: {
+                    navigate("scheduler")
+                    signalHandler.selectAppointmentType("consultancy")
+
+
+                }
+
             }
             AppointmentTypeCard{
                 id: _appointmentTypeCardOptical
                 appointmentTypeName: "Optician"
                 imageSource: "qrc:/images/optics.jpeg"
+                onClicked: {
+                    navigate("scheduler")
+                    signalHandler.selectAppointmentType("optics")
+
+                }
             }
             AppointmentTypeCard{
                 id: _appointmentTypeCardDental
                 appointmentTypeName: "Dental"
+                onClicked: {
+                    navigate("scheduler")
+                    signalHandler.selectAppointmentType("dental")
+
+
+                }
             }
             AppointmentTypeCard{
                 id: _appointmentTypeCardSurgery
@@ -77,6 +97,12 @@ Item {
                 Layout.alignment: Qt.AlignHCenter
                 appointmentTypeName: "Surgery"
                 imageSource: "qrc:/images/surgery.jpeg"
+                onClicked: {
+                    navigate("scheduler")
+                    signalHandler.selectAppointmentType("surgery")
+
+
+                }
             }
         }
 

@@ -18,6 +18,10 @@ public:
     bool authenticated() const;
     void setAuthenticated(bool newAuthenticated);
 
+
+private slots:
+    void onLogin();
+
 signals:
     void tokenChanged();
     void userNameChanged();

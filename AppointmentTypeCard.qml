@@ -14,6 +14,8 @@ Item {
     property alias imageSource: _image.source
     property bool hovered: false
 
+    signal clicked()
+
     Rectangle{
         id: _rectangleBackground
         anchors.fill: parent
@@ -69,6 +71,7 @@ Item {
         cursorShape: Qt.PointingHandCursor
         onEntered: root.hovered = true
         onExited: root.hovered = false
+        onClicked: root.clicked()
 
     }
 

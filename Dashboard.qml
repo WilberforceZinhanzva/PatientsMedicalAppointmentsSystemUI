@@ -48,6 +48,9 @@ Item {
                 id: _textButtonSignIn
                 buttonText: "Sign In"
                 textPosition: "right"
+                onClicked: {
+                    dialogsManager.openDialog("LoginDialog.qml")
+                }
             }
 
         }
@@ -61,7 +64,24 @@ Item {
         anchors.left: parent.left
         anchors.right: parent.right
         anchors.bottom: parent.bottom
-        initialItem: "AppointmentScheduler.qml"
+        initialItem: "Services.qml"
+
+
     }
+
+
+    Connections{
+        target: _stackView.currentItem
+        ignoreUnknownSignals: true
+        function onNavigate(page){
+            switch(page){
+            case "scheduler":
+                _stackView.push("AppointmentScheduler.qml")
+            }
+        }
+    }
+
+
+
 
 }

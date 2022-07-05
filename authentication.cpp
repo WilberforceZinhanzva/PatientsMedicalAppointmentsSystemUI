@@ -1,5 +1,10 @@
 #include "authentication.h"
-
+#include "networkmanager.h"
+#include <QHttpPart>
+#include <QHttpMultiPart>
+#include <QNetworkReply>
+#include <QJsonDocument>
+#include <QJsonObject>
 
 Authentication &Authentication::instance()
 {
@@ -9,6 +14,20 @@ Authentication &Authentication::instance()
 
 void Authentication::login(const QString &username, const QString &password)
 {
+
+   QJsonObject object;
+   object.insert("username",QJsonValue(username));
+   object.insert("password",QJsonValue(password));
+
+   QJsonDocument document(object);
+
+    QString url = QString("%1/login").arg(NetworkManager::instance().pureBaseurl());
+    QNetworkRequest request(url);
+    request.setHeader(QNetworkRequest::ContentTypeHeader,"application/json");
+    QNetworkReply *reply = NetworkManager::instance().post(request,document.toJson());
+
+
+    connect(reply, &QNetworkReply::finished, this, &Authentication::onLogin);
 
 }
 
@@ -64,4 +83,31 @@ void Authentication::setAuthenticated(bool newAuthenticated)
         return;
     m_authenticated = newAuthenticated;
     emit authenticatedChanged();
+}
+
+void Authentication::onLogin()
+{
+    QNetworkReply *reply = qobject_cast<QNetworkReply*>(sender());
+
+    if(!reply->error() && reply->attribute(QNetworkRequest::HttpStatusCodeAttribute)==200){
+        QString token = reply->rawHeader("authorization");
+        if(!token.isEmpty()){
+            this->setToken(token);
+            this->setAuthenticated(true);
+        }
+    }
+    else if(reply->error() && reply->attribute(QNetworkRequest::HttpStatusCodeAttribute)==403){
+        qDebug() << reply->errorString();
+    }
+    else if(reply->error() && reply->attribute(QNetworkRequest::HttpStatusCodeAttribute)==401){
+        Exception exception = NetworkManager::instance().fromJson(reply->readAll());
+        qDebug() << exception.message << "401 Error";
+    }
+    else{
+       qDebug() << reply->errorString();
+
+    }
+
+
+
 }
