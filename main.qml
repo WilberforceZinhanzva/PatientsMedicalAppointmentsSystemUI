@@ -21,7 +21,8 @@ ApplicationWindow {
             id: _loader
             anchors.fill: parent
             anchors.bottomMargin: 20
-            source: "Dashboard.qml"
+            source: pageNavigator.currentPage
+
         }
 
         Text{

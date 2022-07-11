@@ -10,6 +10,7 @@
 #include "applicationstatemanager.h"
 #include "authentication.h"
 #include "dialogsmanager.h"
+#include "pagenavigator.h"
 
 
 int main(int argc, char *argv[])
@@ -29,6 +30,7 @@ int main(int argc, char *argv[])
     engine.rootContext()->setContextProperty("signalHandler", &SignalHandler::instance());
     engine.rootContext()->setContextProperty("applicationStateManager", &ApplicationStateManager::instance());
     engine.rootContext()->setContextProperty("dialogsManager",&DialogsManager::instance());
+    engine.rootContext()->setContextProperty("pageNavigator",&PageNavigator::instance());
     QObject::connect(&engine, &QQmlApplicationEngine::objectCreated,
                      &app, [url](QObject *obj, const QUrl &objUrl) {
         if (!obj && url == objUrl)

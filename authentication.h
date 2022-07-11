@@ -11,6 +11,8 @@ public:
     static Authentication& instance();
 
     Q_INVOKABLE void login(const QString& username, const QString &password);
+    Q_INVOKABLE void signUp(const QString& fullname, const QString& phone, const QString& email, const QString& address, const QString& username, const QString& password);
+    Q_INVOKABLE void bookAppointment(const QString& appointmentType, const QString &doctorId, const QString &dateAndTime);
     const QString &token() const;
     void setToken(const QString &newToken);
     const QString &userName() const;
@@ -21,11 +23,22 @@ public:
 
 private slots:
     void onLogin();
+    void onSignUp();
+    void onBookAppointment();
+
 
 signals:
     void tokenChanged();
     void userNameChanged();
     void authenticatedChanged();
+
+    void signUpInProgress();
+    void signUpSuccess();
+    void signUpFailure();
+
+    void bookingProgress();
+    void bookingSuccess();
+    void bookingFailure();
 
 private:
     Authentication();

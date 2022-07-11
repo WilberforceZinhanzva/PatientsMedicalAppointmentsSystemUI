@@ -43,6 +43,9 @@ Item {
                 id: _textButtonSignUp
                 buttonText: "Sign Up"
                 textPosition: "right"
+                onClicked: {
+                    dialogsManager.openDialog("RegistrationDialog.qml")
+                }
             }
             TextButton{
                 id: _textButtonSignIn

@@ -9,6 +9,8 @@ Item {
     implicitWidth: 600
     implicitHeight: 400
 
+    signal timeSelected(string time)
+
     property alias selectionColor: _componentRefresherHeading.selectionColor
 
     ComponentRefresherHeading{
@@ -31,10 +33,15 @@ Item {
         anchors.bottom: parent.bottom
         cellWidth: 210
         cellHeight: 70
+        clip: true
 
         model: _timeSlotModel
         delegate: TimeSlot{
             timeRange: model.startTime + " - "+ model.endTime
+            onClicked: {
+                timeSelected(model.startTime)
+            }
+
 
             Component.onCompleted: setButtonGroup(_buttonGroup)
         }

@@ -199,7 +199,13 @@ Item {
                             anchors.fill: parent
                             cursorShape: Qt.PointingHandCursor
                             onClicked: {
-                                dialogsManager.openDialog("LoginAndBookAppointment.qml")
+                                if(authentication.authenticated){
+                                    dialogsManager.openDialog("BookAppointmentDialog.qml")
+                                }else{
+                                     dialogsManager.openDialog("LoginAndBookAppointment.qml")
+                                }
+
+
                             }
                         }
                     }
@@ -218,7 +224,7 @@ Item {
     }
 
     onSelectedAppointmentTypeChanged: {
-
+        applicationStateManager.selectedAppointmentType = root.selectedAppointmentType
          selectionMade()
     }
     onSelectedDateChanged: {
@@ -267,11 +273,42 @@ Item {
 
             let tempDate = new Date(date)
             let year = tempDate.getFullYear()
-            let month = tempDate.getMonth()
+            let month = tempDate.getMonth() + 1
             let day = tempDate.getDate();
 
             root.selectedDate = formatDateDigit(day) + "-"+ formatDateDigit(month)+"-"+year
 
+        }
+    }
+
+    Connections{
+        target: _timePicker
+        ignoreUnknownSignals: true
+
+        function onTimeSelected(time){
+            if(time.endsWith("am")){
+                let tempTime = time.substring(0,time.lastIndexOf("am"))
+                root.selectedTime = tempTime.trim()
+            }
+            else if(time.endsWith("pm")){
+                let tempTime = time.substring(0,time.lastIndexOf("pm"))
+
+                let frontPart = tempTime.substring(0,tempTime.lastIndexOf(":"));
+                if(frontPart.startsWith("0")){
+                    frontPart = frontPart.substring(1,frontPart.length);
+                }
+
+                let backPart = tempTime.substring(tempTime.lastIndexOf(":"), tempTime.length)
+                let timeValueIn24Hr = Number(frontPart) + 12;
+                let timeValueIn24HrString = timeValueIn24Hr + "";
+                if(timeValueIn24Hr == 24){
+                    timeValueIn24HrString = "00";
+                }
+
+                root.selectedTime = timeValueIn24HrString + backPart
+                root.selectedTime.trim();
+            }
+            console.log("SELCTED TIME "+ root.selectedTime)
         }
     }
 

@@ -33,8 +33,8 @@ private:
     ~NetworkManager();
     NetworkManager& operator=(const NetworkManager&);
 
-    QString m_baseUrl = "http://localhost:8080/api/v1";
-    QString m_pureBaseurl = "http://localhost:8080";
+    QString m_baseUrl = "http://localhost:12900/api/v1";
+    QString m_pureBaseurl = "http://localhost:12900";
     Q_PROPERTY(QString pureBaseurl READ pureBaseurl WRITE setPureBaseurl NOTIFY pureBaseurlChanged)
 };
 

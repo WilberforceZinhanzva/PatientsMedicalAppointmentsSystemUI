@@ -31,6 +31,47 @@ void Authentication::login(const QString &username, const QString &password)
 
 }
 
+void Authentication::signUp(const QString &fullname, const QString &phone, const QString &email, const QString &address, const QString &username, const QString &password)
+{
+
+    emit signUpInProgress();
+
+    QJsonObject object;
+    object.insert("fullname",QJsonValue(fullname));
+    object.insert("phone",QJsonValue(phone));
+    object.insert("email",QJsonValue(email));
+    object.insert("address",QJsonValue(address));
+    object.insert("username",QJsonValue(username));
+    object.insert("password",QJsonValue(password));
+
+    QString url = QString("%1/registration/patients").arg(NetworkManager::instance().baseUrl());
+    QNetworkRequest request(url);
+    request.setHeader(QNetworkRequest::ContentTypeHeader,"application/json");
+    QNetworkReply *reply = NetworkManager::instance().post(request,QJsonDocument(object).toJson());
+    connect(reply, &QNetworkReply::finished, this, &Authentication::onSignUp);
+
+
+}
+
+void Authentication::bookAppointment(const QString &appointmentType, const QString &doctorId, const QString &dateAndTime)
+{
+    emit bookingProgress();
+
+    QJsonObject object;
+    object.insert("appointmentType",appointmentType);
+    object.insert("doctorId",doctorId);
+    object.insert("appointmentDateAndTime",dateAndTime);
+
+    QString url = QString("%1/appointments").arg(NetworkManager::instance().baseUrl());
+    QNetworkRequest request(url);
+    request.setHeader(QNetworkRequest::ContentTypeHeader,"application/json");
+    request.setRawHeader("authorization",QVariant(this->token()).toByteArray());
+    QNetworkReply *reply = NetworkManager::instance().post(request,QJsonDocument(object).toJson());
+
+    connect(reply, &QNetworkReply::finished, this, &Authentication::onBookAppointment );
+
+}
+
 Authentication::Authentication()
 {
 
@@ -95,6 +136,10 @@ void Authentication::onLogin()
             this->setToken(token);
             this->setAuthenticated(true);
         }
+
+        QJsonObject object = QJsonDocument::fromJson(reply->readAll()).object();
+        this->setUserName(object.value("fullname").toString());
+
     }
     else if(reply->error() && reply->attribute(QNetworkRequest::HttpStatusCodeAttribute)==403){
         qDebug() << reply->errorString();
@@ -110,4 +155,36 @@ void Authentication::onLogin()
 
 
 
+}
+
+void Authentication::onSignUp()
+{
+    QNetworkReply *reply = qobject_cast<QNetworkReply*>(sender());
+
+    if(!reply->error() && reply->attribute(QNetworkRequest::HttpStatusCodeAttribute) == 200){
+        emit signUpSuccess();
+    }else{
+        emit signUpFailure();
+        qDebug() << reply->errorString();
+    }
+
+    reply->deleteLater();
+}
+
+void Authentication::onBookAppointment()
+{
+    QNetworkReply *reply = qobject_cast<QNetworkReply*>(sender());
+
+    if(!reply->error() && reply->attribute(QNetworkRequest::HttpStatusCodeAttribute) == 200){
+        emit bookingSuccess();
+        qDebug() << reply->attribute(QNetworkRequest::HttpStatusCodeAttribute);
+    }else if(reply->error() && reply->attribute(QNetworkRequest::HttpStatusCodeAttribute)==409){
+        Exception exception = NetworkManager::instance().fromJson(reply->readAll());
+        qDebug() << exception.message;
+    }else{
+        qDebug() << reply->errorString();
+        qDebug() << reply->attribute(QNetworkRequest::HttpStatusCodeAttribute);
+        emit bookingFailure();
+    }
+    reply->deleteLater();
 }

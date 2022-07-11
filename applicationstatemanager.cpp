@@ -68,8 +68,8 @@ const QString &ApplicationStateManager::selectedAppointmentType() const
 
 void ApplicationStateManager::setSelectedAppointmentType(const QString &newSelectedAppointmentType)
 {
-    if (m_selectedAppointmentType == newSelectedAppointmentType)
-        return;
+//    if (m_selectedAppointmentType == newSelectedAppointmentType)
+//        return;
     m_selectedAppointmentType = newSelectedAppointmentType;
     emit selectedAppointmentTypeChanged();
 }

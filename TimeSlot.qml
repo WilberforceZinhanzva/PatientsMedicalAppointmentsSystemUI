@@ -10,6 +10,8 @@ Item {
     implicitWidth: 200
     implicitHeight: 60
 
+    signal clicked()
+
 
     property alias timeRange : _textTimeRange.text
 
@@ -20,13 +22,7 @@ Item {
         radius: 5
         color: Theme.baseColor
 
-        MouseArea{
-            anchors.fill: parent
-            cursorShape: Qt.PointingHandCursor
-            onClicked: {
-                _radioButton.checked = true
-            }
-        }
+
 
         RowLayout{
             anchors.fill: parent
@@ -64,6 +60,16 @@ Item {
         transparentBorder: true
 
     }
+
+    MouseArea{
+        anchors.fill: parent
+        cursorShape: Qt.PointingHandCursor
+        onClicked: {
+            _radioButton.checked = true
+            root.clicked()
+        }
+    }
+
 
 
 

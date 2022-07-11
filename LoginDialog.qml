@@ -60,7 +60,14 @@ Item
                 enabled: _textFieldUsername.text.length > 0 && _textFieldPassword.text.length >0
 
                 onClicked: {
-                    authentication.login(_textFieldUsername.text, _textFieldPassword.text)
+                    if(authentication.authenticated){
+                        pageNavigator.navigateToPage("PatientAccount.qml")
+                        dialogsManager.closeDialog()
+                    }else{
+                        authentication.login(_textFieldUsername.text, _textFieldPassword.text)
+
+                    }
+
                 }
             }
         }
@@ -72,6 +79,8 @@ Item
         function onAuthenticatedChanged(){
             if(authentication.authenticated){
                 //Go TO Account
+                pageNavigator.navigateToPage("PatientAccount.qml")
+                dialogsManager.closeDialog()
             }
         }
     }
