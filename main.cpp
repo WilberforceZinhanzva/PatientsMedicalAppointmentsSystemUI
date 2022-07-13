@@ -5,6 +5,7 @@
 //[MODELS]
 #include "doctormodel.h"
 #include "timeslotmodel.h"
+#include "appointmentsmodel.h"
 //[UTILS]
 #include "signalhandler.h"
 #include "applicationstatemanager.h"
@@ -22,6 +23,7 @@ int main(int argc, char *argv[])
     qmlRegisterSingletonType(QUrl("qrc:/PatientsMedicalAppointmentsSystem/Theme.qml"),"Theming",1,0,"Theme");
     qmlRegisterType<DoctorModel>("CollectionModels",1,0,"DoctorModel");
     qmlRegisterType<TimeSlotModel>("CollectionModels",1,0,"TimeSlotModel");
+    qmlRegisterType<AppointmentsModel>("CollectionModels",1,0,"AppointmentsModel");
 
     QQmlApplicationEngine engine;
     const QUrl url(u"qrc:/PatientsMedicalAppointmentsSystem/main.qml"_qs);

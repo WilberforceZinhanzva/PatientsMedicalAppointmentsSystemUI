@@ -5,8 +5,8 @@ project(PatientsMedicalAppointmentsSystem VERSION 0.1 LANGUAGES CXX)
 set(CMAKE_AUTOMOC ON)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-set(PatientsMedicalAppointmentsSystem_SOURCES main.cpp authentication.cpp networkmanager.cpp doctormodel.cpp notificationmanager.cpp signalhandler.cpp applicationstatemanager.cpp timeslotmodel.cpp dialogsmanager.cpp pagenavigator.cpp)
-set(PatientsMedicalAppointmentsSystem_HEADERS authentication.h networkmanager.h doctormodel.h notificationmanager.h signalhandler.h applicationstatemanager.h timeslotmodel.h dialogsmanager.h pagenavigator.h)
+set(PatientsMedicalAppointmentsSystem_SOURCES main.cpp authentication.cpp networkmanager.cpp doctormodel.cpp notificationmanager.cpp signalhandler.cpp applicationstatemanager.cpp timeslotmodel.cpp dialogsmanager.cpp pagenavigator.cpp appointmentsmodel.cpp)
+set(PatientsMedicalAppointmentsSystem_HEADERS authentication.h networkmanager.h doctormodel.h notificationmanager.h signalhandler.h applicationstatemanager.h timeslotmodel.h dialogsmanager.h pagenavigator.h appointmentsmodel.h)
 set(PatientsMedicalAppointmentsSystem_RESOURCES assets.qrc)
 
 find_package(Qt6 6.2 COMPONENTS Quick REQUIRED)
@@ -24,6 +24,7 @@ qt_add_qml_module(appPatientsMedicalAppointmentsSystem
     VERSION 1.0
     QML_FILES main.qml Theme.qml Dashboard.qml TextButton.qml Services.qml AppointmentTypeCard.qml AppointmentScheduler.qml DoctorPicker.qml ComponentRefresherHeading.qml DatePicker.qml
     MonthHeading.qml MonthDate.qml TimePicker.qml TimeSlot.qml LoginAndBookAppointment.qml BookAppointmentDialog.qml LoginDialog.qml RegistrationDialog.qml PatientAccount.qml
+    AppointmentsListHeader.qml AppointmentsListHeaderItem.qml AppointmentsListDelegate.qml AppointmentsModelItem.qml
 )
 
 set_target_properties(appPatientsMedicalAppointmentsSystem PROPERTIES

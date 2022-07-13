@@ -6,5 +6,7 @@
         <file>images/optics.jpeg</file>
         <file>images/surgery.jpeg</file>
         <file>icons/power-button.svg</file>
+        <file>icons/draggable-dots.svg</file>
+        <file>icons/user.svg</file>
     </qresource>
 </RCC>

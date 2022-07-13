@@ -2,6 +2,7 @@ import QtQuick
 import QtQuick.Layouts
 import QtQuick.Controls.Imagine
 import Theming 1.0
+import CollectionModels 1.0
 
 Item {
     id: root
@@ -23,7 +24,7 @@ Item {
 
             Text{
                 anchors.centerIn: parent
-                font.pixelSize: 20
+                font.pixelSize: 17
                 font.family: Theme.primaryFont
                 textFormat: Text.RichText
                 text: "<font>medi<strong>CAL</strong></font>"
@@ -72,6 +73,54 @@ Item {
 
     }
 
+    Rectangle{
+        id: _rectangleContentBackground
+        anchors.left: parent.left
+        anchors.right: parent.right
+        anchors.bottom: parent.bottom
+        anchors.top: _layoutHeader.bottom
+        color: "#F2F8FF"//Qt.rgba(29,122,255,0.5)
+
+        ColumnLayout{
+            anchors.fill: parent
+            anchors.margins: 20
+
+            Text{
+                id: _textTitle
+                text: "Appointments"
+                font.pixelSize: 20
+                font.family: Theme.primaryFont
+                Layout.alignment: Qt.AlignLeft
+            }
+
+            ListView{
+                id: _listViewAppointments
+                Layout.fillHeight: true
+                Layout.fillWidth: true
+                spacing: 10
+                header: AppointmentsListHeader{
+
+                }
+                model: _appointmentsModel
+
+                delegate: AppointmentsListDelegate{
+
+                }
+            }
+
+
+        }
+    }
+
+
+    AppointmentsModel{
+        id: _appointmentsModel
+    }
+
+
+    Component.onCompleted: {
+        _appointmentsModel.fetchAppointments("All","")
+    }
 
 
 }
