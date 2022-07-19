@@ -315,7 +315,7 @@ Item {
     function fetchImage(){
         switch(root.selectedAppointmentType){
         case "dental":
-            return "";
+            return "qrc:/images/dental.jpg";
         case "optics":
             return "qrc:/images/optics.jpeg";
         case "consultancy":

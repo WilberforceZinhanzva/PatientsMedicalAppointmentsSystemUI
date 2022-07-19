@@ -7,6 +7,10 @@ Item {
     width: _rectangleBackground.width
     height: 50
 
+    opacity: model.AppointmentStatus ==="Cancelled"? 0.5 : 1
+
+    signal cancelAppointment(string appointmentId)
+
     Rectangle{
         id: _rectangleBackground
         width: Math.max(_layout.width,root.parent.width)
@@ -89,6 +93,7 @@ Item {
                 width: 150
                 height: 35
                 Layout.alignment: Qt.AlignVCenter
+                visible: model.AppointmentStatus !== "Cancelled"
                 Rectangle{
                     id: _rectangleButtonBackground
                     anchors.fill: parent
@@ -117,6 +122,7 @@ Item {
                 MouseArea{
                     anchors.fill: parent
                     cursorShape: Qt.PointingHandCursor
+                    onClicked: cancelAppointment(model.Id)
                 }
 
             }

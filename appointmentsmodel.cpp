@@ -27,6 +27,16 @@ void AppointmentsModel::fetchAppointments(const QString &key, const QString &val
     connect(reply, &QNetworkReply::finished, this, &AppointmentsModel::onAppointmentsFetched);
 }
 
+void AppointmentsModel::cancelAppointment(const QString &id)
+{
+    QString url = QString("%1/appointments/%2/cancel/cancelled_by_patient/").arg(NetworkManager::instance().baseUrl()).arg(id);
+    QNetworkRequest request(url);
+    request.setRawHeader("Authorization",QVariant(Authentication::instance().token()).toByteArray());
+    QNetworkReply *reply = NetworkManager::instance().sendCustomRequest(request,"PUT");
+    connect(reply, &QNetworkReply::finished,this,&AppointmentsModel::onAppointmentCancelled);
+
+}
+
 
 
 
@@ -36,6 +46,20 @@ void AppointmentsModel::clear()
         delete a;
     }
     m_appointments.clear();
+}
+
+void AppointmentsModel::updateAppointmentStatus(const QString &id, const QString &status)
+{
+    int row =0;
+    for(Appointment *a : m_appointments){
+        if(a->id == id){
+            a->appointmentStatus = status;
+            QModelIndex index = createIndex(row,0);
+            emit dataChanged(index,index);
+            break;
+        }
+        row++;
+    }
 }
 
 void AppointmentsModel::onAppointmentsFetched()
@@ -65,6 +89,22 @@ void AppointmentsModel::onAppointmentsFetched()
         qDebug() << reply->errorString();
     }
 
+}
+
+void AppointmentsModel::onAppointmentCancelled()
+{
+    QNetworkReply *reply = qobject_cast<QNetworkReply*>(sender());
+
+    if(!reply->error() && reply->attribute(QNetworkRequest::HttpStatusCodeAttribute)==200){
+        QJsonObject object = QJsonDocument::fromJson(reply->readAll()).object();
+        QString id = object.value("id").toString();
+        QString appointmentStatus = object.value("appointmentStatus").toString();
+        updateAppointmentStatus(id,appointmentStatus);
+    }else{
+        qDebug() << reply->error();
+    }
+
+    reply->deleteLater();
 }
 
 int AppointmentsModel::rowCount(const QModelIndex &parent) const

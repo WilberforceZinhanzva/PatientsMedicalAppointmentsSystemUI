@@ -53,7 +53,9 @@ void Authentication::signUp(const QString &fullname, const QString &phone, const
 
 }
 
-void Authentication::bookAppointment(const QString &appointmentType, const QString &doctorId, const QString &dateAndTime)
+
+
+void Authentication::bookAppointment(const QString &appointmentType, const QString &doctorId, const QString &dateAndTime,const QString &paymentMethod)
 {
     emit bookingProgress();
 
@@ -61,6 +63,7 @@ void Authentication::bookAppointment(const QString &appointmentType, const QStri
     object.insert("appointmentType",appointmentType);
     object.insert("doctorId",doctorId);
     object.insert("appointmentDateAndTime",dateAndTime);
+    object.insert("paymentType",paymentMethod);
 
     QString url = QString("%1/appointments").arg(NetworkManager::instance().baseUrl());
     QNetworkRequest request(url);

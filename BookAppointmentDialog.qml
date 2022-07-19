@@ -17,6 +17,7 @@ Item {
         ColumnLayout{
             anchors.fill: parent
             anchors.margins: 10
+            spacing: 10
 
             Text{
                 id: _textTitle
@@ -30,6 +31,33 @@ Item {
                 horizontalAlignment: Qt.AlignHCenter
                 textFormat: Text.RichText
             }
+
+            Item{Layout.fillHeight: true}
+
+            Text{
+                id: _textPaymentMethodSelection
+                Layout.alignment: Qt.AlignHCenter
+                text: "Choose Payment Method"
+                font.family: Theme.primaryFont
+                font.bold: true
+                font.pixelSize: 10
+            }
+
+            RowLayout{
+                id: _layoutPaymentOptions
+                spacing: 10
+                Layout.alignment: Qt.AlignHCenter
+
+                PaymentMethodPicker{
+                    id: _paymentMethodMedicalAid
+                    label: "Medical Aid"
+                }
+                PaymentMethodPicker{
+                    id: _paymentMethodOther
+                    label: "Other"
+                }
+            }
+            Item{Layout.fillHeight: true}
 
             Text{
                 id: _textStatus
@@ -58,9 +86,9 @@ Item {
                     anchors.fill: parent
                     cursorShape: Qt.PointingHandCursor
                     onClicked:{
-                        let dateAndTime = applicationStateManager.selectedDate + " "+applicationStateManager.selectedTime
+                        let dateAndTime = applicationStateManager.selectedDate.trim() + " "+applicationStateManager.selectedTime.trim()
 
-                       authentication.bookAppointment(applicationStateManager.selectedAppointmentType,applicationStateManager.selectedDoctor,dateAndTime)
+                       authentication.bookAppointment(applicationStateManager.selectedAppointmentType,applicationStateManager.selectedDoctor,dateAndTime,applicationStateManager.selectedPaymentMethod)
 
                     }
                 }
@@ -68,25 +96,47 @@ Item {
         }
 
 
+
+
         Connections{
-            target: applicationStateManager
+            target: _paymentMethodMedicalAid
             ignoreUnknownSignals: true
-            function onBookingProgress(){
-               _textStatus.text = "Booking in progress...Please Wait!"
-               _textStatus.visible = true
+            function onClicked(name){
+                _paymentMethodOther.state="normal"
+                applicationStateManager.selectedPaymentMethod = "MEDICAL_AID"
             }
-
-            function onBookingSuccess(){
-                _textStatus.text = "Success!"
-                _textStatus.visible = false
-
-                //OPEN PATIENT ACCOUNT
+        }
+        Connections{
+            target: _paymentMethodOther
+            ignoreUnknownSignals: true
+            function onClicked(name){
+                _paymentMethodMedicalAid.state="normal"
+                applicationStateManager.selectedPaymentMethod = "CASH"
             }
-            function onBookingFailure(){
-                _textStatus.text = "Booking Failed!"
-                _textStatus.visible = true
-            }
+        }
+    }
 
+
+    Connections{
+        target: authentication
+        ignoreUnknownSignals: true
+        function onBookingProgress(){
+           _textStatus.text = "Booking in progress...Please Wait!"
+           _textStatus.visible = true
+        }
+
+        function onBookingSuccess(){
+            _textStatus.text = "Success!"
+            _textStatus.visible = false
+
+            //OPEN PATIENT ACCOUNT
+             dialogsManager.closeDialog()
+            pageNavigator.navigateToPage("PatientAccount.qml")
+
+        }
+        function onBookingFailure(){
+            _textStatus.text = "Booking Failed!"
+            _textStatus.visible = true
         }
 
     }

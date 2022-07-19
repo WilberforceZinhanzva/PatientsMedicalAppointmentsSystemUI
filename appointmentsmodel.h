@@ -28,10 +28,13 @@ public:
     ~AppointmentsModel();
 
     Q_INVOKABLE void fetchAppointments(const QString& key, const QString& value);
+    Q_INVOKABLE void cancelAppointment(const QString& id);
     void clear();
+    void updateAppointmentStatus(const QString& id, const QString& status);
 
 private slots:
     void onAppointmentsFetched();
+    void onAppointmentCancelled();
 
 private:
     QVector<Appointment*>m_appointments;

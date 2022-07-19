@@ -84,6 +84,7 @@ Item {
             AppointmentTypeCard{
                 id: _appointmentTypeCardDental
                 appointmentTypeName: "Dental"
+                imageSource: "qrc:/images/dental.jpg"
                 onClicked: {
                     navigate("scheduler")
                     signalHandler.selectAppointmentType("dental")

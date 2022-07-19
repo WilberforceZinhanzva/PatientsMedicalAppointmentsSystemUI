@@ -19,12 +19,18 @@ public:
     const QString &selectedTime() const;
     void setSelectedTime(const QString &newSelectedTime);
 
+    const QString &selectedPaymentMethod() const;
+    void setSelectedPaymentMethod(const QString &newSelectedPaymentMethod);
+
+
 signals:
     void selectedAppointmentTypeChanged();
 
     void selectedDoctorChanged();
     void selectedDateChanged();
     void selectedTimeChanged();
+
+    void selectedPaymentMethodChanged();
 
 private:
     ApplicationStateManager();
@@ -36,10 +42,12 @@ private:
     QString m_selectedDoctor;
     QString m_selectedDate;
     QString m_selectedTime;
+    QString m_selectedPaymentMethod;
     Q_PROPERTY(QString selectedAppointmentType READ selectedAppointmentType WRITE setSelectedAppointmentType NOTIFY selectedAppointmentTypeChanged)
     Q_PROPERTY(QString selectedDoctor READ selectedDoctor WRITE setSelectedDoctor NOTIFY selectedDoctorChanged)
     Q_PROPERTY(QString selectedDate READ selectedDate WRITE setSelectedDate NOTIFY selectedDateChanged)
     Q_PROPERTY(QString selectedTime READ selectedTime WRITE setSelectedTime NOTIFY selectedTimeChanged)
+    Q_PROPERTY(QString selectedPaymentMethod READ selectedPaymentMethod WRITE setSelectedPaymentMethod NOTIFY selectedPaymentMethodChanged)
 };
 
 #endif // APPLICATIONSTATEMANAGER_H

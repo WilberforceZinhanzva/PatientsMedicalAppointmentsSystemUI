@@ -24,7 +24,7 @@ qt_add_qml_module(appPatientsMedicalAppointmentsSystem
     VERSION 1.0
     QML_FILES main.qml Theme.qml Dashboard.qml TextButton.qml Services.qml AppointmentTypeCard.qml AppointmentScheduler.qml DoctorPicker.qml ComponentRefresherHeading.qml DatePicker.qml
     MonthHeading.qml MonthDate.qml TimePicker.qml TimeSlot.qml LoginAndBookAppointment.qml BookAppointmentDialog.qml LoginDialog.qml RegistrationDialog.qml PatientAccount.qml
-    AppointmentsListHeader.qml AppointmentsListHeaderItem.qml AppointmentsListDelegate.qml AppointmentsModelItem.qml
+    AppointmentsListHeader.qml AppointmentsListHeaderItem.qml AppointmentsListDelegate.qml AppointmentsModelItem.qml PaymentMethodPicker.qml
 )
 
 set_target_properties(appPatientsMedicalAppointmentsSystem PROPERTIES

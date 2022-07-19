@@ -12,7 +12,7 @@ public:
 
     Q_INVOKABLE void login(const QString& username, const QString &password);
     Q_INVOKABLE void signUp(const QString& fullname, const QString& phone, const QString& email, const QString& address, const QString& username, const QString& password);
-    Q_INVOKABLE void bookAppointment(const QString& appointmentType, const QString &doctorId, const QString &dateAndTime);
+    Q_INVOKABLE void bookAppointment(const QString& appointmentType, const QString &doctorId, const QString &dateAndTime, const QString &paymentMethod);
     const QString &token() const;
     void setToken(const QString &newToken);
     const QString &userName() const;

@@ -22,6 +22,21 @@ ApplicationStateManager::~ApplicationStateManager()
 
 }
 
+const QString &ApplicationStateManager::selectedPaymentMethod() const
+{
+    return m_selectedPaymentMethod;
+}
+
+void ApplicationStateManager::setSelectedPaymentMethod(const QString &newSelectedPaymentMethod)
+{
+    if (m_selectedPaymentMethod == newSelectedPaymentMethod)
+        return;
+    m_selectedPaymentMethod = newSelectedPaymentMethod;
+    emit selectedPaymentMethodChanged();
+}
+
+
+
 const QString &ApplicationStateManager::selectedDoctor() const
 {
     return m_selectedDoctor;

@@ -104,7 +104,15 @@ Item {
                 model: _appointmentsModel
 
                 delegate: AppointmentsListDelegate{
+                    id: _appointmentsListDelegate
 
+                    Connections{
+                        target: _appointmentsListDelegate
+                        ignoreUnknownSignals: true
+                        function onCancelAppointment(appointmentId){
+                            _appointmentsModel.cancelAppointment(appointmentId)
+                        }
+                    }
                 }
             }
 
@@ -121,6 +129,9 @@ Item {
     Component.onCompleted: {
         _appointmentsModel.fetchAppointments("All","")
     }
+
+
+
 
 
 }
